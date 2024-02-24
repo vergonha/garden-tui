@@ -38,6 +38,22 @@ func (ap *audioPanel) Pause() {
 	speaker.Unlock()
 }
 
+func (ap *audioPanel) VolumeUp() {
+	speaker.Lock()
+	ap.volume.Volume += 0.5
+	speaker.Unlock()
+}
+
+func (ap *audioPanel) VolumeDown() {
+	speaker.Lock()
+	ap.volume.Volume -= 0.5
+	speaker.Unlock()
+}
+
+func (ap *audioPanel) GetVolume() float64 {
+	return ap.volume.Volume
+}
+
 func (ap *audioPanel) IsPaused() bool {
 	return ap.ctrl.Paused
 }

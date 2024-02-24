@@ -14,6 +14,9 @@ type Provider interface {
 
 type Player interface {
 	Play()
+	VolumeUp()
+	VolumeDown()
+	GetVolume() float64
 	Pause()
 	IsPaused() bool
 	SetStreamer(streamer beep.StreamSeeker)

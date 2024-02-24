@@ -54,6 +54,8 @@ Use your keyboard to interact with interface. Check the keybindings below.
 | :----------------------: | ---------------------------------------------------------- |
 | <kbd>p</kbd> | Pause                                       |
 |       <kbd>s</kbd>       | Search |
+|       <kbd>+</kbd>       | Increase Volume  |
+|       <kbd>-</kbd>       | Decrease Volume  |
 |       <kbd>&lt;ENTER&gt;</kbd>       | Select Station |
 
 
@@ -61,6 +63,6 @@ Use your keyboard to interact with interface. Check the keybindings below.
 
 ### Tasks
 
-- [ ] Add volume controls.
+- [x] Add volume controls.
 - [ ] Improve interface usability.
 - [ ] Review code. 

@@ -32,6 +32,21 @@ func SetupKeyboardInputHandlers(UI *UI, Service *services.Service) {
 			return event
 		}
 
+		if UI.App.GetFocus() != UI.Station.Form.Search {
+			if event.Rune() == '+' {
+				Service.Player.VolumeUp()
+				UI.ChangeVolumeText(Service.Player.GetVolume())
+				return event
+			}
+
+			if event.Rune() == '-' {
+				Service.Player.VolumeDown()
+				UI.ChangeVolumeText(Service.Player.GetVolume())
+				return event
+			}
+
+		}
+
 		// If 'p' is pressed, pause or play the current audio
 		if event.Rune() == 'p' {
 			if Service.Player != nil && UI.App.GetFocus() != UI.Station.Form.Search {

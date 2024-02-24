@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"strconv"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"github.com/vergonha/garden-tui/services"
@@ -55,11 +57,12 @@ func drawSearchGrid() (*tview.Grid, *tview.InputField, *tview.List) {
 	return searchGrid, searchGridFormInputField, searchGridFormList
 }
 
-func drawPlayerGrid() (*tview.Grid, *tview.TextView) {
+func drawPlayerGrid() (*tview.Grid, *tview.TextView, *tview.TextView) {
 
 	// The initial texts for the player.
 	playerText := newPrimitive("🎶 Waiting...")
 	instructions := newPrimitive("🔍 Search for a station with 's' or play/pause with 'p'")
+	volumeText := newPrimitive("🔉'-'/🔊'+' - Volume: Default")
 
 	// All centered.
 	playerGrid := tview.NewGrid().
@@ -68,8 +71,9 @@ func drawPlayerGrid() (*tview.Grid, *tview.TextView) {
 
 	playerGrid.AddItem(playerText, 0, 0, 1, 3, 0, 0, false)
 	playerGrid.AddItem(instructions, 1, 0, 1, 3, 0, 0, false)
+	playerGrid.AddItem(volumeText, 2, 0, 1, 3, 0, 0, false)
 
-	return playerGrid, playerText
+	return playerGrid, playerText, volumeText
 }
 
 // Run starts the UI
@@ -85,7 +89,7 @@ func Run(app *tview.Application, service *services.Service) {
 		SetBorders(true)
 
 	searchGrid, searchGridFormInputField, searchGridFormList := drawSearchGrid()
-	playerGrid, playerText := drawPlayerGrid()
+	playerGrid, playerText, volumeText := drawPlayerGrid()
 
 	grid.AddItem(playerGrid, 1, 0, 1, 3, 0, 0, false)
 	grid.AddItem(searchGrid, 0, 0, 1, 3, 0, 0, true)
@@ -103,6 +107,7 @@ func Run(app *tview.Application, service *services.Service) {
 		NowPlaying: NowPlaying{
 			State: NowPlayingState{
 				CurrentStation: playerText,
+				Volume:         volumeText,
 			},
 		},
 	}
@@ -118,6 +123,10 @@ func Run(app *tview.Application, service *services.Service) {
 func (u *UI) SetFocusOnSearch() {
 	u.App.SetFocus(u.Station.Form.Search)
 	u.Station.Form.Search.SetText("")
+}
+
+func (UI *UI) ChangeVolumeText(volume float64) {
+	UI.NowPlaying.State.Volume.SetText("🔉'-'/🔊'+' - Volume: " + strconv.FormatFloat(volume, 'f', -1, 32))
 }
 
 func (UI *UI) DisplayAndSetFocusOnResults(currentResults *garden.Search) {
@@ -149,6 +158,7 @@ type Station struct {
 type NowPlayingState struct {
 	CurrentStation *tview.TextView
 	Title          string
+	Volume         *tview.TextView
 }
 
 type NowPlaying struct {
